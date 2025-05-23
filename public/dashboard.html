@@ -1,70 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard</title>
+  <title>Dompet Santri - Dashboard</title>
   <style>
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #166088;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --info: #17a2b8;
+      --light: #f8f9fa;
+      --dark: #343a40;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f4f6f9;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
       color: #333;
+      line-height: 1.6;
     }
 
-    h1, h2 {
-      text-align: center;
-      color: #2c3e50;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
     }
 
-    #welcome-message {
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: white;
+    }
+
+    .user-info {
       text-align: center;
+    }
+
+    .user-info small {
+      display: block;
+      opacity: 0.8;
+    }
+
+    h1, h2, h3 {
+      /* color: var(--secondary); */
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
       margin-bottom: 2rem;
-      font-size: 1.1rem;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .summary-card h3 {
+      margin-top: 0;
+      color: var(--dark);
+      font-size: 1rem;
+    }
+
+    .summary-card .amount {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .income {
+      color: var(--success);
+    }
+
+    .expense {
+      color: var(--danger);
+    }
+
+    .balance {
+      color: var(--primary);
     }
 
     form {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      max-width: 600px;
-      margin: auto;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      justify-content: center;
+      margin-bottom: 1.5rem;
     }
 
-    form input, form button {
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input, select, button {
+      width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
     }
 
-    form input:focus {
-      border-color: #3498db;
+    input:focus, select:focus {
+      border-color: var(--primary);
       outline: none;
+      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
     }
 
-    form button {
-      background-color: #28a745;
+    header button {
+      cursor: pointer;
+      width: 10%;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
       color: white;
       border: none;
-      cursor: pointer;
-      transition: background 0.3s;
     }
 
-    form button:hover {
-      background-color: #218838;
+    .btn-primary:hover {
+      background-color: var(--secondary);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-logout {
+      background-color: var(--dark);
+      color: white;
+      border: none;
+    }
+
+    .btn-logout:hover {
+      background-color: #23272b;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 2rem;
       background: white;
       border-radius: 10px;
       overflow: hidden;
@@ -78,76 +191,181 @@
     }
 
     th {
+      background-color: var(--light);
+      font-weight: 600;
+    }
+
+    tr:hover {
       background-color: #f8f9fa;
     }
 
-    td button {
-      background: #dc3545;
-      border: none;
-      color: white;
-      padding: 0.5rem 0.75rem;
-      border-radius: 6px;
-      cursor: pointer;
+    .type-income {
+      color: var(--success);
+      font-weight: 500;
     }
 
-    td button:hover {
-      background: #c82333;
+    .type-expense {
+      color: var(--danger);
+      font-weight: 500;
     }
 
-    .logout-btn {
-      display: block;
-      margin: 2rem auto 0;
-      padding: 0.75rem 1.5rem;
-      background: #6c757d;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
+    .filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
-    .logout-btn:hover {
-      background: #5a6268;
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
     }
 
-    @media (max-width: 600px) {
+    .no-transactions {
+      text-align: center;
+      padding: 2rem;
+      color: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+      
       form {
+        grid-template-columns: 1fr;
+      }
+      
+      .filters {
         flex-direction: column;
-        align-items: stretch;
       }
     }
   </style>
 </head>
 <body>
-  <h1>Dashboard</h1>
-  <div id="welcome-message"></div>
+  <header>
+    <div class="header-content">
+      <h1>Dompet Santri</h1>
+    </div>
+    <div class="user-info">
+      <span id="welcome-user"></span>
+      <small id="current-date"></small>
+    </div>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </header>
 
-  <h2>Tambah Transaksi</h2>
-  <form id="transaction-form">
-    <input type="text" id="title" placeholder="Nama" required />
-    <input type="number" id="amount" placeholder="Jumlah uang" required />
-    <input type="date" id="transactionDate" required  placeholder="pp"/>
-    <button type="submit">Tambah</button>
-  </form>
+  <div class="container">
+    <div class="summary-cards">
+      <div class="summary-card">
+        <h3>Total Pemasukan</h3>
+        <div class="amount income" id="total-income">Rp0</div>
+        <small>Bulan Ini</small>
+      </div>
+      <div class="summary-card">
+        <h3>Total Pengeluaran</h3>
+        <div class="amount expense" id="total-expense">Rp0</div>
+        <small>Bulan Ini</small>
+      </div>
+      <div class="summary-card">
+        <h3>Saldo</h3>
+        <div class="amount balance" id="total-balance">Rp0</div>
+        <small>Bulan Ini</small>
+      </div>
+    </div>
 
-  <h2>Daftar Transaksi</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Tanggal</th>
-        <th>Judul</th>
-        <th>Jumlah</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody id="transaction-table"></tbody>
-  </table>
+    <div class="card">
+      <h2>Tambah Transaksi</h2>
+      <form id="transaction-form">
+        <div class="form-group">
+          <label for="type">Jenis Transaksi</label>
+          <select id="type" required>
+            <option value="income">Pemasukan</option>
+            <option value="expense">Pengeluaran</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="title">Keterangan</label>
+          <input type="text" id="title" placeholder="Misal: Uang Saku" required />
+        </div>
+        <div class="form-group">
+          <label for="amount">Jumlah (Rp)</label>
+          <input type="number" id="amount" min="0" placeholder="100000" required />
+        </div>
+        <div class="form-group">
+          <label for="transactionDate">Tanggal</label>
+          <input type="date" id="transactionDate" />
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <button type="submit" class="btn-primary">Simpan Transaksi</button>
+        </div>
+      </form>
+    </div>
 
-  <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="card">
+      <h2>Daftar Transaksi</h2>
+      <div class="filters">
+        <div class="filter-group">
+          <label for="filter-month">Bulan</label>
+          <select id="filter-month">
+            <option value="">Semua Bulan</option>
+            <!-- Options will be filled by JavaScript -->
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-year">Tahun</label>
+          <select id="filter-year">
+            <option value="">Semua Tahun</option>
+            <!-- Options will be filled by JavaScript -->
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-type">Jenis</label>
+          <select id="filter-type">
+            <option value="">Semua Jenis</option>
+            <option value="income">Pemasukan</option>
+            <option value="expense">Pengeluaran</option>
+          </select>
+        </div>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Keterangan</th>
+            <th>Jenis</th>
+            <th>Jumlah</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="transaction-table">
+          <tr>
+            <td colspan="5" class="no-transactions">Memuat data transaksi...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+  </div>
 
   <script>
     let currentUser = null;
+    let transactions = [];
+    let monthlySummary = {};
 
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth();
+      setupDateInput();
+      setupMonthYearFilters();
+      await fetchTransactions();
+      updateSummaryCards();
+      displayCurrentDate();
+    });
+
+    // Auth functions
     async function checkAuth() {
       const res = await fetch('/api/auth/me');
       if (!res.ok) {
@@ -156,56 +374,234 @@
       }
       const data = await res.json();
       currentUser = data.user;
-      document.getElementById('welcome-message').innerHTML =
-        `<p>Selamat datang, <strong>${currentUser.displayName || currentUser.username}</strong>!</p>`;
+      document.getElementById('welcome-user').textContent = 
+        `Selamat datang, ${currentUser.displayName || currentUser.username}`;
     }
 
-    checkAuth().then(() => {
-      fetchTransactions();
-    });
+    function displayCurrentDate() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('current-date').textContent = 
+        now.toLocaleDateString('id-ID', options);
+    }
 
-    async function fetchTransactions() {
-      const res = await fetch(`/api/transactions`);
-      const data = await res.json();
-      const tbody = document.getElementById('transaction-table');
-      tbody.innerHTML = '';
+    // Date input setup
+    function setupDateInput() {
+      const dateInput = document.getElementById('transactionDate');
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
+    }
 
-      data.forEach(tx => {
-        const tr = document.createElement('tr');
-        const date = new Date(tx.transactionDate || tx.createdAt);
-        const formattedDate = date.toLocaleDateString('id-ID');
-
-        tr.innerHTML = `
-          <td>${formattedDate}</td>
-          <td>${tx.title}</td>
-          <td>${tx.amount.toLocaleString('id-ID')}</td>
-          <td><button onclick="deleteTx(${tx.id})">Hapus</button></td>`;
-        tbody.appendChild(tr);
+    // Month and year filters setup
+    function setupMonthYearFilters() {
+      const monthSelect = document.getElementById('filter-month');
+      const yearSelect = document.getElementById('filter-year');
+      
+      // Add months
+      const months = [
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+      
+      months.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = index + 1;
+        option.textContent = month;
+        monthSelect.appendChild(option);
       });
+      
+      // Add years (current year and 5 years before/after)
+      const currentYear = new Date().getFullYear();
+      for (let year = currentYear - 2; year <= currentYear + 2; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+      }
+      
+      // Set current month/year as default
+      monthSelect.value = new Date().getMonth() + 1;
+      yearSelect.value = currentYear;
+      
+      // Add event listeners for filters
+      monthSelect.addEventListener('change', applyFilters);
+      yearSelect.addEventListener('change', applyFilters);
+      document.getElementById('filter-type').addEventListener('change', applyFilters);
     }
 
+    // Transaction functions
+    async function fetchTransactions() {
+      try {
+        const res = await fetch('/api/transactions');
+        if (!res.ok) throw new Error('Gagal memuat transaksi');
+        
+        const data = await res.json();
+        transactions = data.transactions || [];
+        monthlySummary = data.summary || {};
+        
+        renderTransactions();
+        updateSummaryCards();
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('transaction-table').innerHTML = `
+          <tr>
+            <td colspan="5" class="no-transactions">Gagal memuat transaksi: ${error.message}</td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderTransactions(filteredTransactions = null) {
+      const tbody = document.getElementById('transaction-table');
+      const dataToRender = filteredTransactions || transactions;
+      
+      if (dataToRender.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="no-transactions">Tidak ada transaksi</td>
+          </tr>
+        `;
+        return;
+      }
+      
+      // Sort by date (newest first)
+      const sortedTransactions = [...dataToRender].sort((a, b) => {
+        return new Date(b.transactionDate) - new Date(a.transactionDate);
+      });
+      
+      tbody.innerHTML = sortedTransactions.map(tx => {
+        const date = new Date(tx.transactionDate);
+        const formattedDate = date.toLocaleDateString('id-ID', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        
+        const amountFormatted = new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0
+        }).format(tx.amount);
+        
+        return `
+          <tr>
+            <td>${formattedDate}</td>
+            <td>${tx.title}</td>
+            <td class="type-${tx.type}">${
+              tx.type === 'income' ? 'Pemasukan' : 'Pengeluaran'
+            }</td>
+            <td>${amountFormatted}</td>
+            <td>
+              <button class="btn-danger" onclick="deleteTx(${tx.id})">Hapus</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const month = document.getElementById('filter-month').value;
+      const year = document.getElementById('filter-year').value;
+      const type = document.getElementById('filter-type').value;
+      
+      let filtered = transactions;
+      
+      if (month && year) {
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 0, 23, 59, 59);
+        
+        filtered = filtered.filter(tx => {
+          const txDate = new Date(tx.transactionDate);
+          return txDate >= startDate && txDate <= endDate;
+        });
+      }
+      
+      if (type) {
+        filtered = filtered.filter(tx => tx.type === type);
+      }
+      
+      renderTransactions(filtered);
+    }
+
+    function updateSummaryCards() {
+      const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+      
+      const income = monthlySummary
+        .filter(item => item.type === 'income' && item.month === currentMonth)
+        .reduce((sum, item) => sum + item.total, 0);
+      
+      const expense = monthlySummary
+        .filter(item => item.type === 'expense' && item.month === currentMonth)
+        .reduce((sum, item) => sum + item.total, 0);
+      
+      const balance = income - expense;
+      
+      document.getElementById('total-income').textContent = 
+        formatCurrency(income);
+      document.getElementById('total-expense').textContent = 
+        formatCurrency(expense);
+      document.getElementById('total-balance').textContent = 
+        formatCurrency(balance);
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+
+    // Form submission
     document.getElementById('transaction-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const title = document.getElementById('title').value;
       const amount = parseInt(document.getElementById('amount').value);
-      const transactionDate = document.getElementById('transactionDate').value;
-
-      const res = await fetch('/api/transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, amount, transactionDate })
-      });
-
-      if (res.ok) {
+      const type = document.getElementById('type').value;
+      let transactionDate = document.getElementById('transactionDate').value;
+      
+      // If date is empty, use today's date
+      if (!transactionDate) {
+        const today = new Date();
+        transactionDate = today.toISOString().split('T')[0];
+      }
+      
+      try {
+        const res = await fetch('/api/transactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            title, 
+            amount, 
+            type,
+            transactionDate 
+          })
+        });
+        
+        if (!res.ok) throw new Error('Gagal menyimpan transaksi');
+        
         document.getElementById('transaction-form').reset();
-        fetchTransactions();
+        setupDateInput(); // Reset date to today
+        await fetchTransactions();
+      } catch (error) {
+        alert(error.message);
       }
     });
 
     async function deleteTx(id) {
       if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
-        await fetch(`/api/transactions?id=${id}`, { method: 'DELETE' });
-        fetchTransactions();
+        try {
+          const res = await fetch(`/api/transactions?id=${id}`, { 
+            method: 'DELETE' 
+          });
+          
+          if (!res.ok) throw new Error('Gagal menghapus transaksi');
+          
+          await fetchTransactions();
+        } catch (error) {
+          alert(error.message);
+        }
       }
     }
 
@@ -213,9 +609,6 @@
       await fetch('/api/auth/logout');
       location.href = '/login.html';
     }
-
-    // Set default date to today
-    document.getElementById('transactionDate').valueAsDate = new Date();
   </script>
 </body>
 </html>
