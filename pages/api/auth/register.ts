@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await db.insert(users).values({ username, password: hashed });
   res.status(200).json({ message: 'User registered' });
 } catch (err) {
-  console.error('Insert user error:', err); // Tambahkan ini
+  console.error('Insert user error:', err); 
   res.status(500).json({ error: 'Username already exists or insert failed' });
 }
 }

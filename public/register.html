@@ -1,90 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
 
-    #register-form {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+  form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
 
-    #register-form h2 {
-      text-align: center;
-      margin: 0;
-      margin-bottom: 1rem;
-    }
+  input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
 
-    #register-form input {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      transition: border-color 0.3s;
-    }
+  button {
+    width: 110%;
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+  }
 
-    #register-form input:focus {
-      border-color: #28a745;
-      outline: none;
-    }
+  button:hover {
+    background-color: #218838;
+  }
+</style>
 
-    #register-form button {
-      padding: 0.75rem 1rem;
-      background: #28a745;
-      color: white;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #register-form button:hover {
-      background: #218838;
-    }
-  </style>
 </head>
 <body>
   <form id="register-form">
-    <h2>Register</h2>
     <input type="text" id="username" placeholder="Username" required />
-    <input type="text" id="displayName" placeholder="Nama Lengkap" required />
     <input type="password" id="password" placeholder="Password" required />
     <button type="submit">Register</button>
   </form>
-
   <script>
     document.getElementById('register-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('username').value;
-      const displayName = document.getElementById('displayName').value;
       const password = document.getElementById('password').value;
-
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, displayName })
+        body: JSON.stringify({ username, password })
       });
-
       const data = await res.json();
       if (res.ok) {
         alert('Register success, silakan login.');
